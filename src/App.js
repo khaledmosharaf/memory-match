@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 
 const intialCardCollection = [
@@ -11,6 +11,9 @@ const intialCardCollection = [
   { src: '/img/alphabet-07.jpg' },
   { src: '/img/alphabet-08.jpg' },
 ]
+let unmatchedSound = new Audio('/audio/unmatched.wav')
+let tapSound = new Audio('/audio/tap.wav')
+let matchedSound = new Audio('/audio/matched.wav')
 
 export default function App() {
   const [cards, setCards] = useState([])
@@ -32,8 +35,18 @@ export default function App() {
   }
 
   const handleCardClick = (card) => {
+    setTimeout(() => {
+      tapSound.play()
+    }, 50)
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
   }
+
+  const resetTurn = useCallback(() => {
+    setChoiceOne(null)
+    setChoiceTwo(null)
+    setIsDisabled(false)
+    setTurns((prevTurns) => prevTurns + 1)
+  }, [])
 
   useEffect(() => {
     if (choiceOne && choiceTwo) {
@@ -42,6 +55,8 @@ export default function App() {
         setCards((prevCards) => {
           return prevCards.map((card) => {
             if (card.src === choiceOne.src) {
+              matchedSound.play()
+
               return { ...card, matched: true }
             } else {
               return card
@@ -50,24 +65,19 @@ export default function App() {
         })
         resetTurn()
       } else {
-        console.log('unmatched')
+        // console.log('unmatched')
+        setTimeout(() => {
+          unmatchedSound.play()
+        }, 200)
         setTimeout(() => resetTurn(), 1200)
       }
     }
-  }, [choiceOne, choiceTwo])
+  }, [choiceOne, choiceTwo, resetTurn])
 
   //// start game automatically at the start
   // useEffect(() => shuffleCards(), [])
 
-  const resetTurn = () => {
-    setChoiceOne(null)
-    setChoiceTwo(null)
-    setIsDisabled(false)
-    // setTurns((prevTurns) => prevTurns + 1)
-    setTurns(turns + 1)
-  }
-
-  console.log(cards)
+  // console.log(cards)
 
   return (
     <div className='App'>
@@ -96,6 +106,7 @@ export default function App() {
         ))}
       </div>
       {!turnDisabled && <h3>Turns: {turns}</h3>}
+      {console.log('Double Click Bug')}
     </div>
   )
 }
