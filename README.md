@@ -1,3 +1,7 @@
+Plese visit to open the app: https://glowing-marzipan-7607c0.netlify.app/
+
+# A simple picture matching game created using React
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
