@@ -1,4 +1,4 @@
-Plese visit to open the app: https://glowing-marzipan-7607c0.netlify.app/
+# Please visit to open the app: https://glowing-marzipan-7607c0.netlify.app/
 
 # A simple picture matching game created using React
 
